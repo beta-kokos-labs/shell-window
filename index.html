@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Prompt Interface</title>
+    <style>
+        body {
+            background-color: black;
+            color: lime;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        #output {
+            white-space: pre;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid lime;
+            padding: 10px;
+        }
+        #input {
+            background-color: black;
+            color: lime;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="output"></div>
+<input type="text" id="input" placeholder="Type a command..." />
+
+<script>
+    const outputDiv = document.getElementById('output');
+    const inputField = document.getElementById('input');
+
+    function printOutput(text) {
+        outputDiv.textContent += text + '\n';
+        outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll to the bottom
+    }
+
+    function handleCommand(command) {
+        switch (command.trim().toLowerCase()) {
+            case 'help':
+                printOutput('Available commands: help, clear, echo [text]');
+                break;
+            case 'clear':
+                outputDiv.textContent = '';
+                break;
+            default:
+                if (command.startsWith('echo ')) {
+                    printOutput(command.substring(5));
+                } else {
+                    printOutput(`Unknown command: ${command}`);
+                }
+        }
+    }
+
+    inputField.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const command = inputField.value;
+            printOutput(`> ${command}`);
+            handleCommand(command);
+            inputField.value = '';
+        }
+    });
+</script>
+
+</body>
+</html>
